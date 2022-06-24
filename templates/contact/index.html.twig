@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page | contact{% endblock %}
+
+{% block body %}
+    <h1>Page contact</h1>
+    {# Message success #}
+    {% for message in app.flashes('succes') %}
+        <div class="flash-succes">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <form method="POST" path="{{path("app_contact")}}">
+
+        <div class="form-group">
+            {% if values is defined and values.username is defined %}
+                <input type="text" name="username" placeholder="Votre nom" value="{{values.username}}" />
+            {% else %}
+                <input type="text" name="username" placeholder="Votre nom" />
+            {% endif %}
+            {% if errors is defined and errors.username is defined %}
+                <span class="invalid-feedback">{{errors.username}}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {% if values is defined and values.useremail is defined %}
+                <input type="text" name="useremail" placeholder="Votre email" value="{{values.useremail}}" />
+            {% else %}
+                <input type="text" name="useremail" placeholder="Votre email" />
+            {% endif %}
+            {% if errors is defined and errors.useremail is defined %}
+                <span class="invalid-feedback">{{errors.useremail}}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {% if values is defined and values.subject is defined %}
+                <input type="text" name="subject" placeholder="Sujet" value="{{values.subject}}" />
+            {% else %}
+                <input type="text" name="subject" placeholder="Sujet" />
+            {% endif %}
+            {% if errors is defined and errors.subject is defined %}
+                <span class="invalid-feedback">{{errors.subject}}</span>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {% if values is defined and values.sms is defined %}
+                <textarea name="message">{{values.sms}}</textarea>
+            {% else %}
+                <textarea name="message"></textarea>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <button type="submit">Valider</button>
+        </div>
+    </form>
+{% endblock %}
