@@ -13,7 +13,7 @@ class ContactControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertPageTitleSame("Page | contact");
-        $this->assertSelectorTextContains('h1', 'Page contact');
+        $this->assertSelectorTextContains('h1', 'Page contact', "cococococcoco");
     }
 
     public function testSubmitInvalidUsernameContact(): void
