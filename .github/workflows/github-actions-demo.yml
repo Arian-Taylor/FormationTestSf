@@ -1,18 +1,17 @@
-name: GitHub Actions Demo
-on: [push]
-jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
+name: GitHub Actions Demo # Nom du workflow
+on: [push]  # évenement(s)
+jobs: # groups des traveaux à executer dans le workflow
+  Explore-GitHub-Actions: # Nom du travail à faire
+    runs-on: ubuntu-latest  # Runner : un serveur qui execute vos workflows (ubuntu/windows/macos)
+    steps:  # Grouge des etapes à executer
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."  # execute commande shell (echo)
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"  # execute commande shell (echo)
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}." # execute commande shell (echo)
+      - name: Check out repository code   # nom de l'étape
+        uses: actions/checkout@v3   # execute une action (checkout)
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."  # execute commande shell (echo)
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner." # execute commande shell (echo)
+      - name: List files in the repository  # nom de l'étape
+        run: |  # execute plusieurs commandes (ls, ...)
           ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-      - run: php bin/phpunit
+      - run: echo "🍏 This job's status is ${{ job.status }}." # execute commande shell (echo)

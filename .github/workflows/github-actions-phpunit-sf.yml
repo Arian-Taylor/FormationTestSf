@@ -1,0 +1,26 @@
+# Nom du WorkFlow
+name: Run PHPUnit Symfony in GitHub Actions
+
+# Evenement (s)
+on: [push]  # évenement(s)
+
+# Groups des traveaux
+jobs:
+  # Nom du traivail
+  sf-testing:
+    # Runner : un serveur qui execute vos workflows (ubuntu/windows/macos)
+    runs-on: ubuntu-latest
+    # Groups d'etapes
+    steps:
+      # step 1 : checkout vers ma branche
+      - name: Checkout vers ma branche actuelle
+        uses: actions/checkout@v3
+
+      # step 2 : installer les dependances
+      - name: Installer les dependances
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      # step 3 : Lancer le php unit
+      - name: PHPUnit
+        uses: chindit/actions-phpunit-symfony@master
+        # TIP: You can replace @master by @1.0.0 or any specific version of this package you'd like to use.
