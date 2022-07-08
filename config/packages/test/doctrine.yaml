@@ -1,0 +1,5 @@
+doctrine:
+    dbal:
+        driver: 'sqlite'
+        memory:  true
+        charset: UTF8

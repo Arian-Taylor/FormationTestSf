@@ -23,4 +23,4 @@ jobs:
       # step 3 : Lancer le php unit
       - name: PHPUnit
         uses: chindit/actions-phpunit-symfony@master
-        # TIP: You can replace @master by @1.0.0 or any specific version of this package you'd like to use.
+        # TIP: You can replace @master by @1.0.0 or any specific version of this package you'd like to use. 
