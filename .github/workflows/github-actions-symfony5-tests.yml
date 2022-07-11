@@ -6,7 +6,7 @@ on:
   push:
     branches:
       - main
-      - dev
+      - master
   pull_request:
 
 # Groups des traveaux
