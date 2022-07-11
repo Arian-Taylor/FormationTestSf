@@ -1,8 +1,8 @@
-# Nom du WorkFlow
+# Nom du WorkFlow : valeur modifiable
 name: Run PHPUnit Symfony in GitHub Actions
 
-# Evenement (s)
-on: [push]  # évenement(s)
+# Handler Evenement (s)
+# on: [push]  # évenement(s)
 
 # Groups des traveaux
 jobs:
@@ -33,5 +33,9 @@ jobs:
 
       # step 3 : Lancer le php unit
       - name: PHPUnit
+        env:
+          PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
+          PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
+          PANTHER_NO_SANDBOX: "1"
         uses: chindit/actions-phpunit-symfony@master
         # TIP: You can replace @master by @1.0.0 or any specific version of this package you'd like to use. 
