@@ -1,7 +1,7 @@
-# Nom du WorkFlow : valeur modifiable
+# Nom du WorkFlow
 name: Symfony 5 Tests
 
-# Handler Evenement(s) : valeur modifiable
+# Handler Evenement(s)
 on:
   push:
     branches:
@@ -104,7 +104,3 @@ jobs:
       - name: Run unit and functional tests
         run: |
           php bin/phpunit --stop-on-failure
-
-      # - name: Run Behat/Mink tests
-      #  run: |
-      #    php vendor/bin/behat
