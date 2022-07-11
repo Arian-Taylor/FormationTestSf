@@ -11,62 +11,60 @@ on:
 
 # Groups des traveaux
 jobs:
+
   # Nom du traivail
-  symfony:
+  symfony-tests:
+
+    # Definir le nom du travail
     name: Symfony 5.0 (PHP ${{ matrix.php-versions }})
+
+    # Runner : un serveur qui execute vos workflows (ubuntu/windows/macos)
     # https://hub.docker.com/_/ubuntu/
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         php-versions: ['7.4']
+
     steps:
-      # step 1 : checkout vers ma branche https://github.com/actions/checkout (official)
+      # Step 1 : checkout vers ma branche
+      # https://github.com/actions/checkout (official)
       - name: Checkout vers ma branche actuelle
         uses: actions/checkout@v3
 
+      # Step 2 : configuration de l'extension PHP
       # https://github.com/shivammathur/setup-php (community)
-      # - name: Setup PHP, extensions and composer with shivammathur/setup-php
-      #   uses: shivammathur/setup-php@verbose
-      #   with:
-      #     php-version: ${{ matrix.php-versions }}
-      #     extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@verbose
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo
 
-      # Composer
+      # Step 3 : Mise en cache des dépendances pour accélérer les workflows
+      # PHP - Composer - cache
+      # https://help.github.com/en/actions/configuring-and-managing-workflows/caching-dependencies-to-speed-up-workflows
+      # https://github.com/cypress-io/github-actions-cache/blob/master/examples.md
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-        # https://help.github.com/en/actions/configuring-and-managing-workflows/caching-dependencies-to-speed-up-workflows
       - name: Cache composer dependencies
         uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-      - name: Install Composer dependencies
+      # Step 4 : Installation dependance composer
+      - name: Composer install dependaces
+        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
+      # Step 5 : Symfony : Checker la vulnerabilité des dependances installés
       # https://github.com/sensiolabs/security-checker
       - name: Security check installed dependencies
-        uses: symfonycorp/security-checker-action@v2
-
-      # https://github.com/chekalsky/phpcs-action (community)
-      # - name: Check PSR12 code style (PHP_CodeSniffer)
-      #   uses: chekalsky/phpcs-action@v1.2.0
-      #   with:
-      #     enable_warnings: true
-      #     installed_paths: '${{ github.workspace }}/vendor/squizlabs/php_codesniffer'
-      #     phpcs_bin_path: './vendor/bin/phpcs src --ignore="Migrations/"'
-
-      # https://github.com/phpmd/phpmd
-      # - name: Analyses PHP Code (PHP Mess Detector)
-      #  run: vendor/bin/phpmd src,tests text .phpmd-ruleset.xml
-
-      # https://github.com/phpstan/phpstan
-      # - name: Analyse PHP Code (PHPStan)
-      #   run: vendor/bin/phpstan analyse src
+        uses: symfonycorp/security-checker-action@v3
 
       # - name: Cache node_modules
       #   uses: actions/cache@v1
@@ -90,19 +88,19 @@ jobs:
       #     name: build
       #     path: public/build
 
-      # Symfony
+      # Step 6 : Symfony test console
       - name: Check the Symfony console
         run: |
           php bin/console -V
           php bin/console about
 
-      # BD
+      # Step 7 : BD
       - name: Create BD & table
         run: |
           php bin/console d:d:c --env=test
           php bin/console d:s:u --force --env=test
 
-      # Tests
+      # Step 8 : Symfony Tests
       - name: Run unit and functional tests
         run: |
           php bin/phpunit --stop-on-failure
