@@ -1,7 +1,7 @@
 # Nom du WorkFlow
 name: Symfony 5 Tests
 
-# Handler Evenement(s)
+# L'événement qui déclenche le workflow
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ on:
       - master
   pull_request:
 
-# Groups des traveaux
+# La liste des travaux qui composent le workflow
 jobs:
 
   # Nom du traivail
@@ -23,9 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
-      matrix:
+      matrix: # pour définir une matrice de différentes configurations de travail. Dans le matrice, définissez une ou plusieurs variables suivies d'un tableau de valeurs
         php-versions: ['7.4']
 
+    # la liste de tâches qui s'exécutent dans chaque travail
     steps:
       # Step 1 : checkout vers ma branche
       # https://github.com/actions/checkout (official)

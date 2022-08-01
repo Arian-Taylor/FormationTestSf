@@ -1,10 +1,10 @@
 # Nom du WorkFlow
 name: GitHub Actions Demo
 
-# Handler Evenement(s)
+# L'événement qui déclenche le workflow
 on: [push]
 
-# Groups des traveaux
+# La liste des travaux qui composent le workflow
 jobs:
 
   # Nom du traivail
@@ -13,7 +13,7 @@ jobs:
     # Runner : un serveur qui execute vos workflows (ubuntu/windows/macos)
     runs-on: ubuntu-latest
 
-    # Grouge des etapes à executer
+    # la liste de tâches qui s'exécutent dans chaque travail
     steps:
 
       # Step1: afficher : 🎉 The job was automatically triggered by a push event.
